@@ -5,10 +5,15 @@ export default ({ types: t }) => {
         visitor: {
             ImportDeclaration(path, state) {
                 const givenPath = path.node.source.value;
-                const testPathFolder = state && state.opts && typeof state.opts.testPathFolder === 'string' ? state.opts.testPathFolder : '';
+                const rootPathSuffix = state && state.opts && typeof state.opts.srcFolder === 'string' ? state.opts.srcFolder : undefined;
+                const testFolder = state && state.opts && typeof state.opts.testFolder === 'string' ? state.opts.testFolder : undefined
                 if (pluginHelper.startsWith(givenPath, '$/')) {
-                    console.log(JSON.stringify({ givenPath, filename: state.file.opts.filename, testPathFolder }, null, 4))
-                    path.node.source.value = pluginHelper.transformReflectiveToRootPath(givenPath, state.file.opts.filename, testPathFolder);
+                    path.node.source.value = pluginHelper.transformReflectiveToRootPath(
+                        givenPath,
+                        state.file.opts.filename,
+                        rootPathSuffix,
+                        testFolder,
+                    );
                 }
             }
         }

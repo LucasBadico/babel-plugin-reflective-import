@@ -48,8 +48,8 @@ And you can set the off set between your source and test.
 {
   "plugins": [
     ["babel-plugin-relative-import", {
-      "testPathFolder": "__tests__",
-      "offsetBetweenFolders": 0
+      "testFolder": "__tests__",
+      "srcFolder": "src"
     }]
   ]
 }

@@ -1,20 +1,37 @@
+import {
+    pipe,
+    split,
+    indexOf,
+    flip,
+    concat,
+    remove,
+    join,
+} from 'ramda'
 import { dirname, relative } from 'path';
 import findPkg from 'find-pkg';
+
 const root = process.cwd();
 
-function transformReflectiveToRootPath(path, filePath, testPathFolder = '') {
-    const fileBase = dirname(filePath);
+const testPath = (testDir, srcDir) => dir => pipe(
+    split('/'),
+    arr => pipe(
+        indexOf(testDir),
+        index => pipe(
+            remove(0, index + 1),
+            folders => pipe(
+                reduce((a, i) => [...a, '..'], ['..']),
+                flip(concat)([srcDir, ...folders]),
+                join('/'),
+            )(folders),
+        )(arr),
+    )(arr),
+)(dir)
 
+const transformReflectiveToRootPath = (path, filePath, rootPathSuffix = 'src', testPathFolder = '__tests__') => {
+    // console.log(path, filePath, rootPathSuffix, testPathFolder)
     if (startsWith(path, '$/')) {
-        console.log(fileBase)
-        const withoutTilde = path.substring(2, path.length);
-        if (startsWith(rootPathSuffix, '%/')) {
-            const suffix = rootPathSuffix.substring(1, rootPathSuffix.length);
-            const localRoot = dirname(findPkg.sync(fileBase));
-            return './' + relative(fileBase, `${localRoot}${suffix}/${withoutTilde}`);
-        }
-        const suffix = '/' + rootPathSuffix.replace(/^(\/)|(\/)$/g, '');
-        return './' + relative(fileBase, `${root}${suffix}/${withoutTilde}`);
+        const fileBase = dirname(filePath);
+        return testPath(testPathFolder, rootPathSuffix)(fileBase);
     }
     if (typeof path === 'string') {
         return path;
@@ -22,25 +39,7 @@ function transformReflectiveToRootPath(path, filePath, testPathFolder = '') {
     throw new Error('ERROR: No path passed');
 }
 
-function transformRelativeToRootPath(path, filePath, rootPathSuffix = '') {
-    const fileBase = dirname(filePath);
-    if (startsWith(path, '~/')) {
-        const withoutTilde = path.substring(2, path.length);
-        if (startsWith(rootPathSuffix, '%/')) {
-            const suffix = rootPathSuffix.substring(1, rootPathSuffix.length);
-            const localRoot = dirname(findPkg.sync(fileBase));
-            return './' + relative(fileBase, `${localRoot}${suffix}/${withoutTilde}`);
-        }
-        const suffix = '/' + rootPathSuffix.replace(/^(\/)|(\/)$/g, '');
-        return './' + relative(fileBase, `${root}${suffix}/${withoutTilde}`);
-    }
-    if (typeof path === 'string') {
-        return path;
-    }
-    throw new Error('ERROR: No path passed');
-}
-
-function startsWith(string, target) {
+const startsWith(string, target) => {
     let startsWithTarget = false;
 
     if (typeof string === 'string') {
@@ -53,4 +52,4 @@ function startsWith(string, target) {
     return startsWithTarget;
 }
 
-export default { transformRelativeToRootPath, startsWith, transformReflectiveToRootPath };
+export default { startsWith, transformReflectiveToRootPath };
