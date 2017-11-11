@@ -1,9 +1,9 @@
 # Babel Plugin Relative Import
 
-[![Build Status](https://travis-ci.org/mgcrea/babel-plugin-relative-import.svg?branch=master)](https://travis-ci.org/mgcrea/babel-plugin-relative-import)
+<!-- [![Build Status](https://travis-ci.org/mgcrea/babel-plugin-relative-import.svg?branch=master)](https://travis-ci.org/mgcrea/babel-plugin-relative-import)
 [![Dependency Status](https://david-dm.org/mgcrea/babel-plugin-relative-import.svg)](https://david-dm.org/mgcrea/babel-plugin-relative-import)
 [![devDependency Status](https://david-dm.org/mgcrea/babel-plugin-relative-import/dev-status.svg)](https://david-dm.org/mgcrea/babel-plugin-relative-import#info=devDependencies)
-[![https://github.com/mgcrea/babel-plugin-relative-import](https://img.shields.io/npm/dm/babel-plugin-relative-import.svg)](https://www.npmjs.com/package/babel-plugin-relative-import)
+[![https://github.com/mgcrea/babel-plugin-relative-import](https://img.shields.io/npm/dm/babel-plugin-relative-import.svg)](https://www.npmjs.com/package/babel-plugin-relative-import) -->
 
 Import files for tests as easy if they are in the same folder as the tested.
 give your folder structure
@@ -20,8 +20,8 @@ in your fileTotest.test.js
 ```js
 import componentTotest from '$/fileTotest.js';
 // Gets compiled to:
-import fooHelper from './../../src/fileTotest.js';
-// No more relative path mess!
+import fooHelper from '../../src/fileTotest.js';
+// No more unecessarie paths!
 ```
 
 ## Quickstart
