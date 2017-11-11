@@ -5,12 +5,22 @@
 [![devDependency Status](https://david-dm.org/mgcrea/babel-plugin-relative-import/dev-status.svg)](https://david-dm.org/mgcrea/babel-plugin-relative-import#info=devDependencies)
 [![https://github.com/mgcrea/babel-plugin-relative-import](https://img.shields.io/npm/dm/babel-plugin-relative-import.svg)](https://www.npmjs.com/package/babel-plugin-relative-import)
 
-Import relative files with ease
+Import files for tests as easy if they are in the same folder as the tested.
+give your folder structure
+```
+src/
+  component/
+   fileTotest.js
 
+__tests__/
+  component/
+    fileTotest.test.js
+```
+in your fileTotest.test.js
 ```js
-import fooHelper from '~/helpers/example.js';
+import componentTotest from '$/fileTotest.js';
 // Gets compiled to:
-import fooHelper from './../../../helpers/foo.js';
+import fooHelper from './../../src/fileTotest.js';
 // No more relative path mess!
 ```
 
@@ -24,27 +34,27 @@ Add a `.babelrc` file and write:
 ```js
 {
   "plugins": [
-    "babel-plugin-relative-import"
+    "babel-plugin-reflexive-import"
   ]
 }
 ```
 
 ## Options
 
-You can use a custom root with the `rootPathSuffix` option.
+You can use a custom root with the `testPathFolder` option.
+And you can set the off set between your source and test.
 
 ```js
 {
   "plugins": [
     ["babel-plugin-relative-import", {
-      "rootPathSuffix": "src/js"
+      "testPathFolder": "__tests__",
+      "offsetBetweenFolders": 0
     }]
   ]
 }
 ```
 
-You can also use a path starting with `%/` in your `rootPathSuffix` to automatically resolve the closest `package.json`.
-
 ## Inspiration
 
-Inspired by the [babel-root-import](https://github.com/michaelzoidl/babel-root-import) from Michael J. Zoidl.
+Inspired by the [babel-relative-import](https://github.com/mgcrea/babel-plugin-relative-import) from Olivier Louvignes.
