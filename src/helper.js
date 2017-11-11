@@ -3,8 +3,8 @@ import findPkg from 'find-pkg';
 const root = process.cwd();
 
 function transformRelativeToRootPath(path, filePath, rootPathSuffix = '') {
-  const fileBase = dirname(filePath);
   if (startsWith(path, '~/')) {
+    const fileBase = dirname(filePath);
     const withoutTilde = path.substring(2, path.length);
     if (startsWith(rootPathSuffix, '%/')) {
       const suffix = rootPathSuffix.substring(1, rootPathSuffix.length);
