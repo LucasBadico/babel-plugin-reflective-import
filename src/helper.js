@@ -39,7 +39,7 @@ const transformReflectiveToRootPath = (path, filePath, rootPathSuffix = 'src', t
     throw new Error('ERROR: No path passed');
 }
 
-const startsWith(string, target) => {
+const startsWith = (string, target) => {
     let startsWithTarget = false;
 
     if (typeof string === 'string') {
