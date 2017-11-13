@@ -13,7 +13,7 @@ import findPkg from 'find-pkg';
 
 const root = process.cwd();
 
-const testPath = (testDir, srcDir) => dir => pipe(
+const testPath = (testDir, srcDir) => (dir, givenPath) => pipe(
     split('/'),
     arr => pipe(
         indexOf(testDir),
@@ -22,8 +22,13 @@ const testPath = (testDir, srcDir) => dir => pipe(
             folders => pipe(
                 reduce((a, i) => [...a, '..'], ['..']),
                 flip(concat)([srcDir, ...folders]),
-                join('/'),
             )(folders),
+            untilFolder => pipe(
+              split('/'),
+              remove(0,1),
+              concat(untilFolder),
+              join('/'),
+            )(givenPath)
         )(arr),
     )(arr),
 )(dir)
@@ -32,7 +37,7 @@ const transformReflectiveToRootPath = (path, filePath, rootPathSuffix = 'src', t
     // console.log(path, filePath, rootPathSuffix, testPathFolder)
     if (startsWith(path, '$/')) {
         const fileBase = dirname(filePath);
-        return testPath(testPathFolder, rootPathSuffix)(fileBase);
+        return testPath(testPathFolder, rootPathSuffix)(fileBase, path);
     }
     if (typeof path === 'string') {
         return path;
